@@ -16,17 +16,17 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
-DROP DATABASE students;
+DROP DATABASE worldcup;
 --
--- Name: students; Type: DATABASE; Schema: -; Owner: freecodecamp
+-- Name: worldcup; Type: DATABASE; Schema: -; Owner: freecodecamp
 --
 
-CREATE DATABASE students WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'C.UTF-8' LC_CTYPE = 'C.UTF-8';
+CREATE DATABASE worldcup WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'C.UTF-8' LC_CTYPE = 'C.UTF-8';
 
 
-ALTER DATABASE students OWNER TO freecodecamp;
+ALTER DATABASE worldcup OWNER TO freecodecamp;
 
-\connect students
+\connect worldcup
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -44,22 +44,27 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: courses; Type: TABLE; Schema: public; Owner: freecodecamp
+-- Name: games; Type: TABLE; Schema: public; Owner: freecodecamp
 --
 
-CREATE TABLE public.courses (
-    course_id integer NOT NULL,
-    course character varying(100) NOT NULL
+CREATE TABLE public.games (
+    round character varying(15) NOT NULL,
+    year integer NOT NULL,
+    game_id integer NOT NULL,
+    winner_id integer NOT NULL,
+    opponent_id integer NOT NULL,
+    winner_goals integer NOT NULL,
+    opponent_goals integer NOT NULL
 );
 
 
-ALTER TABLE public.courses OWNER TO freecodecamp;
+ALTER TABLE public.games OWNER TO freecodecamp;
 
 --
--- Name: courses_course_id_seq; Type: SEQUENCE; Schema: public; Owner: freecodecamp
+-- Name: games_game_id_seq; Type: SEQUENCE; Schema: public; Owner: freecodecamp
 --
 
-CREATE SEQUENCE public.courses_course_id_seq
+CREATE SEQUENCE public.games_game_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -68,44 +73,32 @@ CREATE SEQUENCE public.courses_course_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.courses_course_id_seq OWNER TO freecodecamp;
+ALTER TABLE public.games_game_id_seq OWNER TO freecodecamp;
 
 --
--- Name: courses_course_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: freecodecamp
+-- Name: games_game_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: freecodecamp
 --
 
-ALTER SEQUENCE public.courses_course_id_seq OWNED BY public.courses.course_id;
+ALTER SEQUENCE public.games_game_id_seq OWNED BY public.games.game_id;
 
 
 --
--- Name: majors; Type: TABLE; Schema: public; Owner: freecodecamp
+-- Name: teams; Type: TABLE; Schema: public; Owner: freecodecamp
 --
 
-CREATE TABLE public.majors (
-    major_id integer NOT NULL,
-    major character varying(50) NOT NULL
+CREATE TABLE public.teams (
+    team_id integer NOT NULL,
+    name character varying(50) NOT NULL
 );
 
 
-ALTER TABLE public.majors OWNER TO freecodecamp;
+ALTER TABLE public.teams OWNER TO freecodecamp;
 
 --
--- Name: majors_courses; Type: TABLE; Schema: public; Owner: freecodecamp
+-- Name: teams_team_id_seq; Type: SEQUENCE; Schema: public; Owner: freecodecamp
 --
 
-CREATE TABLE public.majors_courses (
-    major_id integer NOT NULL,
-    course_id integer NOT NULL
-);
-
-
-ALTER TABLE public.majors_courses OWNER TO freecodecamp;
-
---
--- Name: majors_major_id_seq; Type: SEQUENCE; Schema: public; Owner: freecodecamp
---
-
-CREATE SEQUENCE public.majors_major_id_seq
+CREATE SEQUENCE public.teams_team_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -114,255 +107,149 @@ CREATE SEQUENCE public.majors_major_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.majors_major_id_seq OWNER TO freecodecamp;
+ALTER TABLE public.teams_team_id_seq OWNER TO freecodecamp;
 
 --
--- Name: majors_major_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: freecodecamp
+-- Name: teams_team_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: freecodecamp
 --
 
-ALTER SEQUENCE public.majors_major_id_seq OWNED BY public.majors.major_id;
-
-
---
--- Name: students; Type: TABLE; Schema: public; Owner: freecodecamp
---
-
-CREATE TABLE public.students (
-    student_id integer NOT NULL,
-    first_name character varying(50) NOT NULL,
-    last_name character varying(50) NOT NULL,
-    major_id integer,
-    gpa numeric(2,1)
-);
-
-
-ALTER TABLE public.students OWNER TO freecodecamp;
-
---
--- Name: students_student_id_seq; Type: SEQUENCE; Schema: public; Owner: freecodecamp
---
-
-CREATE SEQUENCE public.students_student_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.students_student_id_seq OWNER TO freecodecamp;
-
---
--- Name: students_student_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: freecodecamp
---
-
-ALTER SEQUENCE public.students_student_id_seq OWNED BY public.students.student_id;
+ALTER SEQUENCE public.teams_team_id_seq OWNED BY public.teams.team_id;
 
 
 --
--- Name: courses course_id; Type: DEFAULT; Schema: public; Owner: freecodecamp
+-- Name: games game_id; Type: DEFAULT; Schema: public; Owner: freecodecamp
 --
 
-ALTER TABLE ONLY public.courses ALTER COLUMN course_id SET DEFAULT nextval('public.courses_course_id_seq'::regclass);
-
-
---
--- Name: majors major_id; Type: DEFAULT; Schema: public; Owner: freecodecamp
---
-
-ALTER TABLE ONLY public.majors ALTER COLUMN major_id SET DEFAULT nextval('public.majors_major_id_seq'::regclass);
+ALTER TABLE ONLY public.games ALTER COLUMN game_id SET DEFAULT nextval('public.games_game_id_seq'::regclass);
 
 
 --
--- Name: students student_id; Type: DEFAULT; Schema: public; Owner: freecodecamp
+-- Name: teams team_id; Type: DEFAULT; Schema: public; Owner: freecodecamp
 --
 
-ALTER TABLE ONLY public.students ALTER COLUMN student_id SET DEFAULT nextval('public.students_student_id_seq'::regclass);
-
-
---
--- Data for Name: courses; Type: TABLE DATA; Schema: public; Owner: freecodecamp
---
-
-INSERT INTO public.courses VALUES (29, 'Data Structures and Algorithms');
-INSERT INTO public.courses VALUES (30, 'Web Programming');
-INSERT INTO public.courses VALUES (31, 'Database Systems');
-INSERT INTO public.courses VALUES (32, 'Computer Networks');
-INSERT INTO public.courses VALUES (33, 'SQL');
-INSERT INTO public.courses VALUES (34, 'Machine Learning');
-INSERT INTO public.courses VALUES (35, 'Computer Systems');
-INSERT INTO public.courses VALUES (36, 'Web Applications');
-INSERT INTO public.courses VALUES (37, 'Artificial Intelligence');
-INSERT INTO public.courses VALUES (38, 'Python');
-INSERT INTO public.courses VALUES (39, 'Object-Oriented Programming');
-INSERT INTO public.courses VALUES (40, 'Calculus');
-INSERT INTO public.courses VALUES (41, 'Game Architecture');
-INSERT INTO public.courses VALUES (42, 'Algorithms');
-INSERT INTO public.courses VALUES (43, 'UNIX');
-INSERT INTO public.courses VALUES (44, 'Server Administration');
-INSERT INTO public.courses VALUES (45, 'Network Security');
+ALTER TABLE ONLY public.teams ALTER COLUMN team_id SET DEFAULT nextval('public.teams_team_id_seq'::regclass);
 
 
 --
--- Data for Name: majors; Type: TABLE DATA; Schema: public; Owner: freecodecamp
+-- Data for Name: games; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
-INSERT INTO public.majors VALUES (42, 'Database Administration');
-INSERT INTO public.majors VALUES (43, 'Web Development');
-INSERT INTO public.majors VALUES (44, 'Data Science');
-INSERT INTO public.majors VALUES (45, 'Network Engineering');
-INSERT INTO public.majors VALUES (46, 'Computer Programming');
-INSERT INTO public.majors VALUES (47, 'Game Design');
-INSERT INTO public.majors VALUES (48, 'System Administration');
-
-
---
--- Data for Name: majors_courses; Type: TABLE DATA; Schema: public; Owner: freecodecamp
---
-
-INSERT INTO public.majors_courses VALUES (42, 29);
-INSERT INTO public.majors_courses VALUES (43, 30);
-INSERT INTO public.majors_courses VALUES (42, 31);
-INSERT INTO public.majors_courses VALUES (44, 29);
-INSERT INTO public.majors_courses VALUES (45, 32);
-INSERT INTO public.majors_courses VALUES (42, 33);
-INSERT INTO public.majors_courses VALUES (44, 34);
-INSERT INTO public.majors_courses VALUES (45, 35);
-INSERT INTO public.majors_courses VALUES (46, 32);
-INSERT INTO public.majors_courses VALUES (42, 36);
-INSERT INTO public.majors_courses VALUES (47, 37);
-INSERT INTO public.majors_courses VALUES (44, 38);
-INSERT INTO public.majors_courses VALUES (46, 39);
-INSERT INTO public.majors_courses VALUES (48, 35);
-INSERT INTO public.majors_courses VALUES (47, 40);
-INSERT INTO public.majors_courses VALUES (43, 29);
-INSERT INTO public.majors_courses VALUES (44, 40);
-INSERT INTO public.majors_courses VALUES (43, 39);
-INSERT INTO public.majors_courses VALUES (47, 41);
-INSERT INTO public.majors_courses VALUES (48, 32);
-INSERT INTO public.majors_courses VALUES (47, 42);
-INSERT INTO public.majors_courses VALUES (48, 43);
-INSERT INTO public.majors_courses VALUES (48, 44);
-INSERT INTO public.majors_courses VALUES (46, 35);
-INSERT INTO public.majors_courses VALUES (46, 38);
-INSERT INTO public.majors_courses VALUES (45, 45);
-INSERT INTO public.majors_courses VALUES (43, 36);
-INSERT INTO public.majors_courses VALUES (45, 42);
+INSERT INTO public.games VALUES ('Final', 2018, 1, 1, 2, 4, 2);
+INSERT INTO public.games VALUES ('Third Place', 2018, 2, 3, 4, 2, 0);
+INSERT INTO public.games VALUES ('Semi-Final', 2018, 3, 2, 4, 2, 1);
+INSERT INTO public.games VALUES ('Semi-Final', 2018, 4, 1, 3, 1, 0);
+INSERT INTO public.games VALUES ('Quarter-Final', 2018, 5, 2, 10, 3, 2);
+INSERT INTO public.games VALUES ('Quarter-Final', 2018, 6, 4, 12, 2, 0);
+INSERT INTO public.games VALUES ('Quarter-Final', 2018, 7, 3, 14, 2, 1);
+INSERT INTO public.games VALUES ('Quarter-Final', 2018, 8, 1, 16, 2, 0);
+INSERT INTO public.games VALUES ('Eighth-Final', 2018, 9, 4, 18, 2, 1);
+INSERT INTO public.games VALUES ('Eighth-Final', 2018, 10, 12, 20, 1, 0);
+INSERT INTO public.games VALUES ('Eighth-Final', 2018, 11, 3, 22, 3, 2);
+INSERT INTO public.games VALUES ('Eighth-Final', 2018, 12, 14, 24, 2, 0);
+INSERT INTO public.games VALUES ('Eighth-Final', 2018, 13, 2, 26, 2, 1);
+INSERT INTO public.games VALUES ('Eighth-Final', 2018, 14, 10, 28, 2, 1);
+INSERT INTO public.games VALUES ('Eighth-Final', 2018, 15, 16, 30, 2, 1);
+INSERT INTO public.games VALUES ('Eighth-Final', 2018, 16, 1, 32, 4, 3);
+INSERT INTO public.games VALUES ('Final', 2014, 17, 33, 32, 1, 0);
+INSERT INTO public.games VALUES ('Third Place', 2014, 18, 35, 14, 3, 0);
+INSERT INTO public.games VALUES ('Semi-Final', 2014, 19, 32, 35, 1, 0);
+INSERT INTO public.games VALUES ('Semi-Final', 2014, 20, 33, 14, 7, 1);
+INSERT INTO public.games VALUES ('Quarter-Final', 2014, 21, 35, 42, 1, 0);
+INSERT INTO public.games VALUES ('Quarter-Final', 2014, 22, 32, 3, 1, 0);
+INSERT INTO public.games VALUES ('Quarter-Final', 2014, 23, 14, 18, 2, 1);
+INSERT INTO public.games VALUES ('Quarter-Final', 2014, 24, 33, 1, 1, 0);
+INSERT INTO public.games VALUES ('Eighth-Final', 2014, 25, 14, 50, 2, 1);
+INSERT INTO public.games VALUES ('Eighth-Final', 2014, 26, 18, 16, 2, 0);
+INSERT INTO public.games VALUES ('Eighth-Final', 2014, 27, 1, 54, 2, 0);
+INSERT INTO public.games VALUES ('Eighth-Final', 2014, 28, 33, 56, 2, 1);
+INSERT INTO public.games VALUES ('Eighth-Final', 2014, 29, 35, 24, 2, 1);
+INSERT INTO public.games VALUES ('Eighth-Final', 2014, 30, 42, 60, 2, 1);
+INSERT INTO public.games VALUES ('Eighth-Final', 2014, 31, 32, 20, 1, 0);
+INSERT INTO public.games VALUES ('Eighth-Final', 2014, 32, 3, 64, 2, 1);
 
 
 --
--- Data for Name: students; Type: TABLE DATA; Schema: public; Owner: freecodecamp
+-- Data for Name: teams; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
-INSERT INTO public.students VALUES (6, 'Rhea', 'Kellems', 42, 2.5);
-INSERT INTO public.students VALUES (7, 'Emma', 'Gilbert', NULL, NULL);
-INSERT INTO public.students VALUES (8, 'Kimberly', 'Whitley', 43, 3.8);
-INSERT INTO public.students VALUES (9, 'Jimmy', 'Felipe', 42, 3.7);
-INSERT INTO public.students VALUES (10, 'Kyle', 'Stimson', NULL, 2.8);
-INSERT INTO public.students VALUES (11, 'Casares', 'Hijo', 47, 4.0);
-INSERT INTO public.students VALUES (12, 'Noe', 'Savage', NULL, 3.6);
-INSERT INTO public.students VALUES (13, 'Sterling', 'Boss', 47, 3.9);
-INSERT INTO public.students VALUES (14, 'Brian', 'Davis', NULL, 2.3);
-INSERT INTO public.students VALUES (15, 'Kaija', 'Uronen', 47, 3.7);
-INSERT INTO public.students VALUES (16, 'Faye', 'Conn', 47, 2.1);
-INSERT INTO public.students VALUES (17, 'Efren', 'Reilly', 43, 3.9);
-INSERT INTO public.students VALUES (18, 'Danh', 'Nhung', NULL, 2.4);
-INSERT INTO public.students VALUES (19, 'Maxine', 'Hagenes', 42, 2.9);
-INSERT INTO public.students VALUES (20, 'Larry', 'Saunders', 44, 2.2);
-INSERT INTO public.students VALUES (21, 'Karl', 'Kuhar', 43, NULL);
-INSERT INTO public.students VALUES (22, 'Lieke', 'Hazenveld', 47, 3.5);
-INSERT INTO public.students VALUES (23, 'Obie', 'Hilpert', 43, NULL);
-INSERT INTO public.students VALUES (24, 'Peter', 'Booysen', NULL, 2.9);
-INSERT INTO public.students VALUES (25, 'Nathan', 'Turner', 42, 3.3);
-INSERT INTO public.students VALUES (26, 'Gerald', 'Osiki', 44, 2.2);
-INSERT INTO public.students VALUES (27, 'Vanya', 'Hassanah', 47, 4.0);
-INSERT INTO public.students VALUES (28, 'Roxelana', 'Florescu', 42, 3.2);
-INSERT INTO public.students VALUES (29, 'Helene', 'Parker', 44, 3.4);
-INSERT INTO public.students VALUES (30, 'Mariana', 'Russel', 43, 1.8);
-INSERT INTO public.students VALUES (31, 'Ajit', 'Dhungel', NULL, 3.0);
-INSERT INTO public.students VALUES (32, 'Mehdi', 'Vandenberghe', 42, 1.9);
-INSERT INTO public.students VALUES (33, 'Dejon', 'Howell', 43, 4.0);
-INSERT INTO public.students VALUES (34, 'Aliya', 'Gulgowski', 48, 2.6);
-INSERT INTO public.students VALUES (35, 'Ana', 'Tupajic', 44, 3.1);
-INSERT INTO public.students VALUES (36, 'Hugo', 'Duran', NULL, 3.8);
+INSERT INTO public.teams VALUES (1, 'France');
+INSERT INTO public.teams VALUES (2, 'Croatia');
+INSERT INTO public.teams VALUES (3, 'Belgium');
+INSERT INTO public.teams VALUES (4, 'England');
+INSERT INTO public.teams VALUES (10, 'Russia');
+INSERT INTO public.teams VALUES (12, 'Sweden');
+INSERT INTO public.teams VALUES (14, 'Brazil');
+INSERT INTO public.teams VALUES (16, 'Uruguay');
+INSERT INTO public.teams VALUES (18, 'Colombia');
+INSERT INTO public.teams VALUES (20, 'Switzerland');
+INSERT INTO public.teams VALUES (22, 'Japan');
+INSERT INTO public.teams VALUES (24, 'Mexico');
+INSERT INTO public.teams VALUES (26, 'Denmark');
+INSERT INTO public.teams VALUES (28, 'Spain');
+INSERT INTO public.teams VALUES (30, 'Portugal');
+INSERT INTO public.teams VALUES (32, 'Argentina');
+INSERT INTO public.teams VALUES (33, 'Germany');
+INSERT INTO public.teams VALUES (35, 'Netherlands');
+INSERT INTO public.teams VALUES (42, 'Costa Rica');
+INSERT INTO public.teams VALUES (50, 'Chile');
+INSERT INTO public.teams VALUES (54, 'Nigeria');
+INSERT INTO public.teams VALUES (56, 'Algeria');
+INSERT INTO public.teams VALUES (60, 'Greece');
+INSERT INTO public.teams VALUES (64, 'United States');
 
 
 --
--- Name: courses_course_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
+-- Name: games_game_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
-SELECT pg_catalog.setval('public.courses_course_id_seq', 45, true);
-
-
---
--- Name: majors_major_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
---
-
-SELECT pg_catalog.setval('public.majors_major_id_seq', 48, true);
+SELECT pg_catalog.setval('public.games_game_id_seq', 32, true);
 
 
 --
--- Name: students_student_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
+-- Name: teams_team_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
-SELECT pg_catalog.setval('public.students_student_id_seq', 36, true);
-
-
---
--- Name: courses courses_pkey; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
---
-
-ALTER TABLE ONLY public.courses
-    ADD CONSTRAINT courses_pkey PRIMARY KEY (course_id);
+SELECT pg_catalog.setval('public.teams_team_id_seq', 64, true);
 
 
 --
--- Name: majors_courses majors_courses_pkey; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+-- Name: games games_pkey; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
 --
 
-ALTER TABLE ONLY public.majors_courses
-    ADD CONSTRAINT majors_courses_pkey PRIMARY KEY (major_id, course_id);
-
-
---
--- Name: majors majors_pkey; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
---
-
-ALTER TABLE ONLY public.majors
-    ADD CONSTRAINT majors_pkey PRIMARY KEY (major_id);
+ALTER TABLE ONLY public.games
+    ADD CONSTRAINT games_pkey PRIMARY KEY (game_id);
 
 
 --
--- Name: students students_pkey; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+-- Name: teams teams_name_key; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
 --
 
-ALTER TABLE ONLY public.students
-    ADD CONSTRAINT students_pkey PRIMARY KEY (student_id);
-
-
---
--- Name: majors_courses majors_courses_course_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: freecodecamp
---
-
-ALTER TABLE ONLY public.majors_courses
-    ADD CONSTRAINT majors_courses_course_id_fkey FOREIGN KEY (course_id) REFERENCES public.courses(course_id);
+ALTER TABLE ONLY public.teams
+    ADD CONSTRAINT teams_name_key UNIQUE (name);
 
 
 --
--- Name: majors_courses majors_courses_major_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: freecodecamp
+-- Name: teams teams_pkey; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
 --
 
-ALTER TABLE ONLY public.majors_courses
-    ADD CONSTRAINT majors_courses_major_id_fkey FOREIGN KEY (major_id) REFERENCES public.majors(major_id);
+ALTER TABLE ONLY public.teams
+    ADD CONSTRAINT teams_pkey PRIMARY KEY (team_id);
 
 
 --
--- Name: students students_major_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: freecodecamp
+-- Name: games games_opponent_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: freecodecamp
 --
 
-ALTER TABLE ONLY public.students
-    ADD CONSTRAINT students_major_id_fkey FOREIGN KEY (major_id) REFERENCES public.majors(major_id);
+ALTER TABLE ONLY public.games
+    ADD CONSTRAINT games_opponent_id_fkey FOREIGN KEY (opponent_id) REFERENCES public.teams(team_id);
+
+
+--
+-- Name: games games_winner_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.games
+    ADD CONSTRAINT games_winner_id_fkey FOREIGN KEY (winner_id) REFERENCES public.teams(team_id);
 
 
 --
